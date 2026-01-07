@@ -2,29 +2,28 @@
  * ui.js
  * Implements "Type to Add" functionality with Real-time Amount Formatting.
  */
-
 async function renderUI() {
   const s = window.state;
-  const b64 = await getBase64Image("logo.png");
-  document.getElementById("main-logo").src = b64;
-  document.getElementById("watermark").src = b64;
 
-  document.getElementById("inv-no").innerText = s.invNo;
-  document.getElementById("inv-date").innerText = s.date;
-  document.getElementById("client-name").innerText = s.client.name;
-  document.getElementById("client-address").innerText = s.client.address;
-  document.getElementById("client-phone").innerText = s.client.phone;
-  document.getElementById("input-advance").innerText =
-    s.advance.toLocaleString("en-IN");
+  // Update static fields
+  document.getElementById("inv-no").innerText = s.invNo || "";
+  document.getElementById("inv-date").innerText = s.date || "";
+  document.getElementById("client-name").innerText = s.client.name || "";
+  document.getElementById("client-address").innerText = s.client.address || "";
+  document.getElementById("client-phone").innerText = s.client.phone || "";
+  document.getElementById("input-advance").innerText = (
+    s.advance || 0
+  ).toLocaleString("en-IN");
 
+  // Clear and Rebuild Table
   const tbody = document.getElementById("items-tbody");
   tbody.innerHTML = "";
 
-  if (s.items.length) {
+  if (s.items && s.items.length > 0) {
     s.items.forEach((i) => addRowToDOM(i.desc, i.amount));
   }
 
-  ensureEmptyRow();
+  ensureEmptyRow(); // Maintains our "Type to Add" empty row at bottom
   calculateTotals();
 }
 

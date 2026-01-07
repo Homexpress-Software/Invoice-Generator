@@ -51,27 +51,61 @@ function saveState() {
   );
   localStorage.setItem(STORAGE_KEY, JSON.stringify(window.state));
 }
-
+/**
+ * EXPORT: Converts current window.state to a JSON file and downloads it.
+ */
 function exportJSON() {
+  // Sync latest UI data to state before exporting
   saveState();
-  const blob = new Blob([JSON.stringify(window.state, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `HX_Data_${window.state.invNo}.json`;
-  a.click();
+
+  const dataStr = JSON.stringify(window.state, null, 2);
+  const dataUri =
+    "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+  const exportFileDefaultName = `Invoice_${window.state.invNo || "data"}.json`;
+
+  const linkElement = document.createElement("a");
+  linkElement.setAttribute("href", dataUri);
+  linkElement.setAttribute("download", exportFileDefaultName);
+  linkElement.click();
 }
 
+/**
+ * IMPORT: Reads a JSON file, updates window.state, and refreshes the UI.
+ */
 function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
   const reader = new FileReader();
-  reader.onload = (e) => {
-    window.state = JSON.parse(e.target.result);
-    renderUI();
-    saveState();
+  reader.onload = function (e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+
+      // Basic validation: Check if essential fields exist
+      if (importedData.invNo && importedData.client) {
+        window.state = importedData;
+
+        // Save to LocalStorage so it persists on refresh
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(window.state));
+
+        // Re-render the entire UI with new data
+        renderUI();
+
+        alert("Invoice data imported successfully!");
+      } else {
+        alert(
+          "Invalid JSON format. Please upload a valid HomExpress invoice file."
+        );
+      }
+    } catch (err) {
+      alert("Error parsing JSON file.");
+      console.error(err);
+    }
+    // Reset the input so the same file can be uploaded again if needed
+    event.target.value = "";
   };
-  reader.readAsText(event.target.files[0]);
+  reader.readAsText(file);
 }
 
 function convertAmountToWords(amount) {
