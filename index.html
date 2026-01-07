@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HomExpress Professional Invoice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <nav
+    class="no-print fixed top-0 left-0 right-0 bg-white border-b border-gray-200 py-3 px-8 flex justify-between items-center z-50 shadow-sm">
+    <div class="text-xs font-black text-gray-900 tracking-widest uppercase">HomExpress Editor</div>
+    <div class="flex gap-3">
+      <button onclick="generatePDF()"
+        class="text-[11px] font-bold bg-blue-600 text-white px-4 py-2 rounded shadow-md">DOWNLOAD PDF</button>
+    </div>
+  </nav>
+
+  <div class="flex flex-col items-center pt-20 pb-20">
+    <div id="invoice-paper" class="shadow-2xl">
+
+      <div id="watermark-container">
+        <img id="watermark" src="logo.png" class="w-full">
+      </div>
+
+      <header class="header-container">
+        <div class="flex justify-between items-start mb-6">
+          <div class="flex items-center gap-5">
+            <img id="main-logo" src="logo.png" class="h-20 w-auto object-contain">
+            <div>
+              <h1 class="text-3xl font-black text-gray-900 uppercase leading-none">HomExpress</h1>
+              <p class="text-[10px] font-bold text-blue-600 tracking-[0.3em] uppercase mt-1">Software</p>
+            </div>
+          </div>
+          <h2 class="text-5xl font-black text-gray-100 uppercase">Invoice</h2>
+        </div>
+
+        <div class="contact-grid">
+          <div>
+            <p>Address:</p>
+            <p class="font-bold text-gray-900">Al-Islam Chamber (2nd Floor)</p>
+            <p>91, Agrabad C/A, Chattogram, Bangladesh</p>
+          </div>
+          <div class="text-right">
+            <p>WhatsApp: <span class="font-bold text-gray-900">+88 0158 189 2235</span></p>
+            <p>Bkash (Merchant): <span class="font-bold text-gray-900">+88 0171 107 2553</span></p>
+            <p>Email: <span class="text-gray-900 font-bold">accounts@homexpressworld.com</span></p>
+            <p class="text-blue-600 font-bold mt-1">Web: <span
+                class="text-gray-900 font-bold">https://homexpressworld.com</span></p>
+          </div>
+        </div>
+      </header>
+
+      <div class="relative z-10 flex justify-between items-start mb-10">
+        <div>
+          <h4 class="text-[10px] font-bold text-gray-400 uppercase mb-1">Bill To:</h4>
+          <div id="client-name" contenteditable="true" class="text-2xl font-black text-gray-900 outline-none"></div>
+          <div id="client-address" contenteditable="true" class="text-xs text-gray-500 w-80 outline-none"></div>
+          <div id="client-phone" contenteditable="true" class="text-xs font-bold text-gray-700 mt-2 outline-none"></div>
+        </div>
+        <div class="text-right space-y-1">
+          <p class="text-[10px] font-bold text-gray-400 uppercase">Ref No.</p>
+          <p id="inv-no" contenteditable="true" class="text-sm font-black text-gray-900 outline-none"></p>
+          <div class="h-4"></div>
+          <p class="text-[10px] font-bold text-gray-400 uppercase">Date</p>
+          <p id="inv-date" contenteditable="true" class="text-sm font-black text-gray-900 outline-none"></p>
+        </div>
+      </div>
+
+      <table class="invoice-table mb-10">
+        <thead>
+          <tr>
+            <th class="w-12 text-center">SL.</th>
+            <th class="text-left px-4">Description of Services</th>
+            <th class="w-40 text-right px-4">Amount (Tk)</th>
+          </tr>
+        </thead>
+        <tbody id="items-tbody"></tbody>
+      </table>
+
+      <div class="relative z-10 flex justify-end">
+        <div class="w-72 space-y-3 bg-gray-50 p-6 rounded-lg border border-gray-100">
+          <div class="flex justify-between text-xs font-bold text-gray-500">
+            <span>SUB-TOTAL:</span>
+            <span id="display-net" class="text-gray-900">0.00</span>
+          </div>
+          <div class="flex justify-between text-xs font-bold text-red-500">
+            <span>ADVANCE PAID:</span>
+            <span id="input-advance" contenteditable="true" class="outline-none"
+              oninput="saveState(); calculateTotals();">0.00</span>
+          </div>
+          <div class="flex justify-between text-xl font-black text-gray-900 border-t border-gray-300 pt-3">
+            <span>TOTAL:</span>
+            <span id="display-grand">0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 border-l-4 border-gray-200 pl-4 relative z-10">
+        <p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Amount in Words</p>
+        <p id="display-words" class="text-[11px] font-bold text-gray-700 italic uppercase"></p>
+      </div>
+
+      <footer class="mt-20 pt-8 border-t border-gray-100 text-center">
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.5em]">Efficiency • Reliability • Excellence
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="ui.js"></script>
+  <script src="pdf-gen.js"></script>
+</body>
+
+</html>

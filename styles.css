@@ -1,0 +1,88 @@
+/* Typography & Core Layout */
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#invoice-paper {
+  width: 210mm;
+  min-height: 297mm;
+  background-color: white;
+  position: relative;
+  padding: 15mm;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+/* Accurate Watermark: Centered and Non-Intrusive */
+#watermark-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header & Info Bar */
+.header-container {
+  position: relative;
+  z-index: 10;
+  border-bottom: 2px solid #111827;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+  font-size: 11px;
+  color: #4b5563;
+}
+
+/* Table Design */
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  z-index: 10;
+  position: relative;
+}
+
+.invoice-table thead tr {
+  border-top: 2px solid #111827;
+  border-bottom: 2px solid #111827;
+}
+
+.invoice-table th {
+  padding: 1rem 1rem;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 900;
+  color: #111827;
+}
+
+/* Content Editable & UI */
+[contenteditable]:focus {
+  outline: none;
+  background-color: #f0f9ff;
+  box-shadow: 0 0 0 2px #bae6fd;
+  border-radius: 2px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+  #invoice-paper {
+    box-shadow: none;
+    margin: 0;
+  }
+}
